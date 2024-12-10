@@ -7,7 +7,7 @@ import { getAllContacts, getContactById } from "./services/contacts.js";
 dotenv.config();
 
 
-export const startServer = ()=>{
+export const setupServer = ()=>{
     const app = express();
 
     app.use(cors());
@@ -23,8 +23,8 @@ export const startServer = ()=>{
       );
 
 
-        app.get("./contacts", async(req, res, next)=>{
-            const data = await getAllContacts();
+        app.get("/contacts", async(req, res, next)=>{
+            const {data} = await getAllContacts();
             res.json({
                 status: 200,
                  message: "Successfully found contacts!",
@@ -33,7 +33,7 @@ export const startServer = ()=>{
         });
 
 
-        app.get("./contacts/:contactId", async(req, res, next)=>{
+        app.get("/contacts/:contactId", async(req, res, next)=>{
             const { contactId } = req.params;
             const data = await getContactById(contactId);
             if(!data){
