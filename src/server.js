@@ -44,7 +44,7 @@ export const setupServer = ()=>{
             if(!data){
                 return res.status(404).json({
                      status:404,
-                     message:`Contact with id = ${contactId} is not found`,
+                     message:"Contact not found",
                     });
                 };
                 });
