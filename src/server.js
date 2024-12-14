@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
-import pino from "pino-http";
+
 import dotenv from "dotenv";
-import { getAllContacts, getContactById } from "./services/contacts.js";
+import contactsRouter from "./routers/contactsRoute.js";
+import {logger} from "./middlewares/logger.js";
+import { notFoundHandler } from "./middlewares/notFoundHandler.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 dotenv.config();
 
@@ -14,54 +17,14 @@ export const setupServer = ()=>{
 
     app.use(express.json());
 
-    app.use(
-        pino({
-          transport: {
-            target: 'pino-pretty',
-          },
-        }),
-      );
+    app.use(logger);
+
+    app.use("./contacts", contactsRouter);
 
 
-        app.get("/contacts", async(req, res, next)=>{
-            const data = await getAllContacts();
-            res.json({
-                status: 200,
-                 message: "Successfully found contacts!",
-                data,
-            });
-        });
+        app.use('*',notFoundHandler);
 
-
-        app.get('/contacts/:contactId', async (req, res, next) => {
-            const { contactId } = req.params;
-            const data = await getContactById(contactId);
-            if (!data) {
-                res.status(404).json({
-                    message: "Contact not found",
-                });
-                return;
-              }
-
-            res.json({
-              status: 200,
-              message: `Successfully found contact with id ${contactId}!`,
-              data,
-            });
-          });
-
-        app.use('*',(req, res)=>{
-            res.status(404).json({
-                message:`${req.url} is not found`,
-            });
-        });
-
-        app.use((error, res, req, next)=>{
-            res.status(500).json({
-                message:"Server error",
-                error:error.message,
-            });
-        });
+        app.use(errorHandler);
         const PORT = Number(process.env.PORT) || 3000;
 
         app.listen(PORT, () => {
