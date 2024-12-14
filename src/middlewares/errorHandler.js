@@ -1,7 +1,8 @@
 
-export const errorHandler =(error, res, req, next)=>{
-    res.status(500).json({
-        message:"Server error",
-        error:error.message,
+export const errorHandler = (error, req, res, next)=> {
+    const {status = 500, message} = error;
+    res.status(status).json({
+        status,
+        message,
     });
 };
