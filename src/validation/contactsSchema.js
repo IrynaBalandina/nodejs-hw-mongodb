@@ -2,7 +2,7 @@ import Joi from "joi";
 import { contactsTypeList } from "../constants/contactsType.js";
 
 export const contactsCreateSchema = Joi.object({
-    name:Joi.string().min(3).max(30).required().messages({
+    name:Joi.string().min(3).max(20).required().messages({
         "nameMin":"Name should have at least 3 characters",
         "nameMax":"Name should have at most 20 characters",
 
@@ -12,17 +12,19 @@ export const contactsCreateSchema = Joi.object({
         "numberMin":"PhoneNumber should have at least 3 characters",
         "numberMax" :"PhoneNumber should have at most 20 characters",
     }),
-    email:Joi.string().email().optional().required().messages({
+    email:Joi.string().min(3).max(20).email().optional().required().messages({
         mailError:"Email must be a valid email address!",
+
     }),
     isFavorite:Joi.boolean().required().messages({
-        messageBoolean:"This field must be true or false",
+        'boolean.base': 'Field must be true or false',
+        'any.required': 'Field is required',
     }),
     contactType:Joi.string().valid(...contactsTypeList),
 });
 
 export const contactsUpdateSchema = Joi.object({
-    name:Joi.string().min(3).max(30).messages({
+    name:Joi.string().min(3).max(20).messages({
         "nameMin":"Name should have at least 3 characters",
         "nameMax":"Name should have at most 20 characters",
 
@@ -36,7 +38,7 @@ export const contactsUpdateSchema = Joi.object({
         mailError:"Email must be a valid email address!",
     }),
     isFavorite:Joi.boolean().messages({
-        messageBoolean:"This field must be true or false",
+        'boolean.base': 'Field must be true or false',
     }),
     contactType:Joi.string().valid(...contactsTypeList),
 });
