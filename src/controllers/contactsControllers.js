@@ -4,6 +4,7 @@ import {createContact, getAllContacts, getContactById, patchContacts, deleteCont
 import createError from "http-errors";
 
 
+
 export const getContactsController = async(req, res, next)=>{
     const data = await getAllContacts();
     res.json({
@@ -29,6 +30,8 @@ export const getContactControllerById = async (req, res, next) => {
   };
 
   export const createContactController = async (req, res) => {
+
+
     const data = await createContact(req.body);
     res.status(201).json({
       status: 201,
