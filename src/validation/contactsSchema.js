@@ -7,20 +7,17 @@ export const contactsCreateSchema = Joi.object({
         "nameMax":"Name should have at most 20 characters",
 
     }),
-    phoneNumber:Joi.string()
-    .pattern(/^\+?\d{9,13}$/)
-    .min(3).max(20)
-    .required()
+    phoneNumber: Joi.string().min(3).max(20).required()
     .messages({
         "numberMin":"PhoneNumber should have at least 3 characters",
         "numberMax" :"PhoneNumber should have at most 20 characters",
-        "numberError":"PhoneNumber should be a number!",
-
     }),
     email:Joi.string().email().optional().required().messages({
         mailError:"Email must be a valid email address!",
     }),
-    isFavorite:Joi.boolean(),
+    isFavorite:Joi.boolean().required().messages({
+        messageBoolean:"This field must be true or false",
+    }),
     contactType:Joi.string().valid(...contactsTypeList),
 });
 
@@ -30,18 +27,16 @@ export const contactsUpdateSchema = Joi.object({
         "nameMax":"Name should have at most 20 characters",
 
     }),
-    phoneNumber:Joi.string()
-    .pattern(/^\+?\d{9,13}$/)
-    .min(3).max(20)
+    phoneNumber: Joi.string().min(3).max(20)
     .messages({
         "numberMin":"PhoneNumber should have at least 3 characters",
         "numberMax" :"PhoneNumber should have at most 20 characters",
-        "numberError":"PhoneNumber should be a number!",
-
     }),
     email:Joi.string().email().optional().messages({
         mailError:"Email must be a valid email address!",
     }),
-    isFavorite:Joi.boolean(),
+    isFavorite:Joi.boolean().messages({
+        messageBoolean:"This field must be true or false",
+    }),
     contactType:Joi.string().valid(...contactsTypeList),
 });
