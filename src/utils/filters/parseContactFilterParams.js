@@ -9,9 +9,9 @@ return;
 const parseType = (contactType) =>{
     const isString = typeof contactType === 'string';
 if(!isString) return;
-const isGender = (contactType) => ['home', 'personal', 'work'].includes(contactType);
+const isContactType = (contactType) => ['home', 'personal'].includes(contactType);
 
-  if (isGender(contactType)) return contactType;
+  if (isContactType(contactType)) return contactType;
 };
 export const parseContactFilterParams = (query) =>{
 
