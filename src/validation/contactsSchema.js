@@ -2,43 +2,24 @@ import Joi from "joi";
 import { contactsTypeList } from "../constants/contactsType.js";
 
 export const contactsCreateSchema = Joi.object({
-    name:Joi.string().min(3).max(20).required().messages({
-        "nameMin":"Name should have at least 3 characters",
-        "nameMax":"Name should have at most 20 characters",
-
-    }),
-    phoneNumber: Joi.string().min(3).max(20).required()
-    .messages({
-        "numberMin":"PhoneNumber should have at least 3 characters",
-        "numberMax" :"PhoneNumber should have at most 20 characters",
-    }),
-    email:Joi.string().min(3).max(20).email().optional().messages({
-        mailError:"Email must be a valid email address!",
-
-    }),
-    isFavourite:Joi.boolean().required().messages({
-        'boolean.base': 'Field must be true or false',
-        'any.required': 'Field is required',
-    }),
-    contactType:Joi.string().required().valid(...contactsTypeList),
+  name: Joi.string().min(3).max(20).required(),
+  phoneNumber: Joi.string().min(3).max(20).required(),
+  email: Joi.string(),
+  isFavourite: Joi.boolean().required(),
+  contactType: Joi.string()
+    .min(3)
+    .max(20)
+    .valid(...contactsTypeList)
+    .required(),
 });
 
 export const contactsUpdateSchema = Joi.object({
-    name:Joi.string().min(3).max(20).messages({
-        "nameMin":"Name should have at least 3 characters",
-        "nameMax":"Name should have at most 20 characters",
-
-    }),
-    phoneNumber: Joi.string().min(3).max(20)
-    .messages({
-        "numberMin":"PhoneNumber should have at least 3 characters",
-        "numberMax" :"PhoneNumber should have at most 20 characters",
-    }),
-    email:Joi.string().email().optional().messages({
-        mailError:"Email must be a valid email address!",
-    }),
-    isFavourite:Joi.boolean().messages({
-        'boolean.base': 'Field must be true or false',
-    }),
-    contactType:Joi.string().valid(...contactsTypeList),
+  name: Joi.string().min(3).max(20),
+  phoneNumber: Joi.string().min(3).max(20),
+  email: Joi.string(),
+  isFavourite: Joi.boolean(),
+  contactType: Joi.string()
+    .min(3)
+    .max(20)
+    .valid(...contactsTypeList),
 });

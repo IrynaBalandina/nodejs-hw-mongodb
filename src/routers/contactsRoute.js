@@ -9,7 +9,7 @@ import { isValidId } from "../middlewares/isValidId.js";
 const contactsRouter = Router();
 contactsRouter.get("/", ctrlWrapper(getContactsController) );
 contactsRouter.get("/:contactId", isValidId, ctrlWrapper(getContactControllerById));
-contactsRouter.post("/",validateBody(contactsCreateSchema), ctrlWrapper(createContactController));
+contactsRouter.post("/", validateBody(contactsCreateSchema), ctrlWrapper(createContactController));
 contactsRouter.patch("/:contactId", isValidId, validateBody(contactsUpdateSchema), ctrlWrapper(patchContactController));
 contactsRouter.delete("/:contactId", isValidId, ctrlWrapper(deleteContactController));
 
