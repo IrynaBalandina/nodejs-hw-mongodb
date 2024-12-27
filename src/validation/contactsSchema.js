@@ -20,7 +20,7 @@ export const contactsCreateSchema = Joi.object({
         'boolean.base': 'Field must be true or false',
         'any.required': 'Field is required',
     }),
-    contactType:Joi.string().valid(...contactsTypeList),
+    contactType:Joi.string().required().valid(...contactsTypeList),
 });
 
 export const contactsUpdateSchema = Joi.object({
