@@ -2,6 +2,7 @@ import {Schema, model} from "mongoose";
 import { contactsTypeList } from "../../constants/contactsType.js";
 
 
+
 const contactsSchema = new  Schema({
     name: {
         type: String,
