@@ -27,14 +27,12 @@ const contactsSchema = new  Schema({
         required: true,
         default: 'personal',
     },
-},
-{
-    timestamps: true,
-    createdAt: Date.now,
-    updatedAt: Date.now,
-
-}
-);
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        required: true,
+    }
+}, {versionKey:false, timestamps: true});
 
 export  const sortByList = ["_id","name", "phoneNumber", "email", "isFavourite", "contactType"];
 const ContactsCollection= model("contact", contactsSchema);
