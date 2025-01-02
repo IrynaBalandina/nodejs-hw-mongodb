@@ -43,3 +43,7 @@ export const login = async ({email, password})=>{
     });
 
 };
+
+export const getUser = filter => UserCollection.findOne(filter);
+
+export const getSession = filter => SessionCollection.findOne(filter);
