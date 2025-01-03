@@ -1,4 +1,4 @@
-import * as authServices from "../services/auth.js";
+import {register, login, refreshUserToken, logout } from "../services/auth.js";
 
 const setupSession = (res, session) => {
     res.cookie("refreshToken", session.refreshToken, {
@@ -13,17 +13,21 @@ const setupSession = (res, session) => {
 };
 
 
-export const registerController = async(req, res)=> {
-    await authServices.register(req.body);
-
-    res.status(201).json({
+export const registerController = async (req, res, next) => {
+    try {
+      const user = await register(req.body);
+      res.status(201).json({
         status: 201,
-        message: "Successfully register a  user",
-    });
-};
+        message: 'Successfully registered a user!',
+        data:user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
 export const loginController = async (req, res)=>{
-    const session = await authServices.login(req.body);
+    const session = await login(req.body);
    setupSession(res, session);
 
     res.json({
@@ -37,7 +41,7 @@ export const loginController = async (req, res)=>{
 
 export const refreshTokenController = async(req, res)=> {
     const {refreshToken, sessionId} = req.cookies;
-     const session = await authServices.refreshToken({refreshToken, sessionId});
+     const session = await refreshUserToken({refreshToken, sessionId});
 
      setupSession(res, session);
 
@@ -52,7 +56,7 @@ export const refreshTokenController = async(req, res)=> {
 
 export const logoutController = async(req, res)=>{
     if(req.cookies.sessionId) {
-        await authServices.logout(req.cookies.sessionId);
+        await logout(req.cookies.sessionId);
     }
 
     res.clearCookie("refreshToken");
