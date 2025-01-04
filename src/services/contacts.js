@@ -8,7 +8,7 @@ export const getAllContacts = async({
     sortBy = "_id",
      sortOrder = "asc",
      filter = {},
-     userId
+     userId,
     }) => {
       const limit = perPage;
       const skip = (page - 1) * perPage;
@@ -70,3 +70,4 @@ export const deleteContact = async(contactId, userId) =>{
     const contact = await ContactsCollection.findOneAndDelete({_id: contactId, userId});
     return contact;
 };
+
