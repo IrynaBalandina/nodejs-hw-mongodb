@@ -3,37 +3,43 @@ import { contactsTypeList } from "../../constants/contactsType.js";
 
 
 
-const contactsSchema = new  Schema({
-    name: {
+const contactsSchema = new Schema(
+    {
+      name: {
         type: String,
         required: true,
-    },
-    phoneNumber: {
+      },
+      phoneNumber: {
         type: String,
         required: true,
-    },
-    email: {
+      },
+      email: {
         type: String,
-        default: undefined,
-    },
-    isFavourite: {
+      },
+      isFavourite: {
         type: Boolean,
-        required:true,
-        default: false,
-    },
-    contactType: {
+        default: true,
+        required: true,
+      },
+      contactType: {
         type: String,
+        required: true,
         enum: contactsTypeList,
-        required: true,
         default: 'personal',
-    },
-    userId: {
+      },
+      userId: {
         type: Schema.Types.ObjectId,
-        ref: "user",
+        ref: 'users',
         required: true,
-    }
-}, {versionKey:false, timestamps: true});
+      },
+    },
+    {
+      timestamps: true,
+      versionKey: false,
+    },
+  );
+
 
 export  const sortByList = ["_id","name", "phoneNumber", "email", "isFavourite", "contactType"];
-const ContactsCollection= model("contact", contactsSchema);
+const ContactsCollection= model("contacts", contactsSchema);
 export default ContactsCollection;

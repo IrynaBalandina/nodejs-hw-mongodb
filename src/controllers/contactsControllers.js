@@ -11,16 +11,13 @@ import { parseContactFilterParams } from "../utils/filters/parseContactFilterPar
 export const getContactsController = async(req, res, next)=>{
   const {page, perPage}= parsePaginationParams(req.query);
   const {sortBy, sortOrder} = parseSortParams(req.query, sortByList);
-  const filter = parseContactFilterParams(req.query);
+  const filter = {...parseContactFilterParams(req.query), userId: req.user._id, };
 
-
- const userId = req.user._id;
-
-    const contacts = await getAllContacts(page, perPage, sortBy, sortOrder, filter, userId);
+    const contacts = await getAllContacts({page, perPage, sortBy, sortOrder, filter,  userId: req.user._id});
     res.json({
         status: 200,
          message: "Successfully found contacts!",
-        data:contacts,
+       data:contacts,
 
     });
 };
