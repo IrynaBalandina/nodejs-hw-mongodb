@@ -7,7 +7,10 @@ import { accessTokenLifetime, refreshTokenLifetime } from "../constants/user.js"
 import jwt from 'jsonwebtoken';
 import { sendEmail } from "../utils/sendMail.js";
 import dotenv from 'dotenv';
-import { SMTP } from '../constants/index.js';
+import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
+import handlebars from 'handlebars';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
 dotenv.config();
 
@@ -89,22 +92,37 @@ export const requestResetToken = async (email) => {
     if (!user) {
       throw createHttpError(404, 'User not found');
     }
-
     const resetToken = jwt.sign(
-        {
-          sub: user._id,
-          email,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: '15m',
-        },
-      );
+      {
+        sub: user._id,
+        email,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '15m',
+      },
+    );
 
-      await sendEmail({
-        from: process.env[SMTP.SMTP_FROM],
-        to: email,
-        subject: 'Reset your password',
-        html: `<p>Click <a href="${resetToken}">here</a> to reset your password!</p>`,
-      });
+    const resetPasswordTemplatePath = path.join(
+      TEMPLATES_DIR,
+      'reset-password-email.html',
+    );
+
+    const templateSource = (
+      await fs.readFile(resetPasswordTemplatePath)
+    ).toString();
+
+    const template = handlebars.compile(templateSource);
+    const html = template({
+      name: user.name,
+      link: `${process.env.APP_DOMAIN}/reset-password?token=${resetToken}`,
+    });
+
+    await sendEmail({
+      from: process.env[SMTP.SMTP_FROM],
+      to: email,
+      subject: 'Reset your password',
+      html,
+    });
   };
+
