@@ -7,6 +7,7 @@ import {logger} from "./middlewares/logger.js";
 import { notFoundHandler } from "./middlewares/notFoundHandler.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import authRouter from "./routers/auth.js";
+import { UPLOADS_DIR } from "./constants/index.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ export const setupServer = ()=>{
     app.use(cors());
 
     app.use(express.json());
+    app.use('/uploads', express.static(UPLOADS_DIR));
     app.use(cookieParser());
     app.use(logger);
 
