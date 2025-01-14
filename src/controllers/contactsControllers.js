@@ -1,5 +1,5 @@
 
-
+import mongoose from "mongoose";
 import {createContact, getAllContacts, getContactById, patchContacts, deleteContact} from "../services/contacts.js";
 import createError from "http-errors";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
@@ -8,6 +8,7 @@ import { sortByList } from "../db/models/Contacts.js";
 import { parseContactFilterParams } from "../utils/filters/parseContactFilterParams.js";
 import {saveFileToCloudinary} from "../utils/saveFileToCloudinary.js";
  import {saveFileToUploadDir} from "../utils/saveFileToUploadDir.js";
+
  import dotenv from 'dotenv';
 dotenv.config();
 
@@ -48,7 +49,7 @@ export const getContactControllerById = async (req, res, next) => {
     let photoUrl;
 
     if (photo) {
-      if (process.env.ENABLE_CLOUDINARY === 'true') {
+      if (process.env.ENABLE_CLOUDINARY === "true") {
         photoUrl = await saveFileToCloudinary(photo);
       } else {
         photoUrl = await saveFileToUploadDir(photo);
@@ -64,11 +65,19 @@ export const getContactControllerById = async (req, res, next) => {
   };
 
 
-  export const patchContactController = async(req, res) =>{
-    const userId = req.user._id;
+
+
+
+
+  export const patchContactController = async (req, res, next) => {
     const { contactId } = req.params;
+    const userId = req.user._id;
     const photo = req.file;
     let photoUrl;
+    if (!mongoose.Types.ObjectId.isValid(contactId)) {
+      return next(createError(400, 'Invalid contactId'));
+    }
+
     if (photo) {
       if (process.env.ENABLE_CLOUDINARY === 'true') {
         photoUrl = await saveFileToCloudinary(photo);
@@ -76,21 +85,23 @@ export const getContactControllerById = async (req, res, next) => {
         photoUrl = await saveFileToUploadDir(photo);
       }
     }
+
     const result = await patchContacts(
       contactId,
       { userId, ...req.body, photo: photoUrl },
       { new: true },
     );
-
-    if(!result){
-      throw createError(404, `Contact with id= ${contactId} not found`);
+    if (!result) {
+      next(createError(404, 'Contact not found'));
+      return;
     }
     res.json({
-      status:200,
-      message: "Successfully upsert contact",
-      data:result.data,
-  });
+      status: 200,
+      message: `Successfully patched a contact!`,
+      data: result.contact,
+    });
   };
+
 
   export const deleteContactController = async(req,res, next)=>{
     const userId = req.user._id;
