@@ -1,24 +1,20 @@
+
 import cloudinary from 'cloudinary';
 import dotenv from 'dotenv';
+import fs from 'fs/promises';
 
-import {unlink} from "node:fs/promises";
 
 dotenv.config();
 
-const cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
-const api_key = process.env.CLOUDINARY_API_KEY;
-const api_secret = process.env.CLOUDINARY_API_SECRET;
-
-cloudinary.config({
-    cloud_name,
-    api_key,
-    api_secret,
+cloudinary.v2.config({
+  secure: true,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const saveFileToCloudinary = async file => {
-    const response = await cloudinary.uploader.upload(file.path, {
-        folder: "posters"
-    });
-    await unlink(file.path);
-    return response.secure_url;
+export const saveFileToCloudinary = async (file) => {
+  const response = await cloudinary.v2.uploader.upload(file.path);
+  await fs.unlink(file.path);
+  return response.secure_url;
 };
