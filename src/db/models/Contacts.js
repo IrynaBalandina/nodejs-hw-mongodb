@@ -30,11 +30,11 @@ const contactsSchema = new Schema(
       photo: {
         type: String,
     },
-      userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
-        required: true,
-      },
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'users',
+    },
     },
     {
       timestamps: true,
