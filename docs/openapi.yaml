@@ -9,11 +9,9 @@ info:
 tags:
   - name: Contacts
     description: Operations about contacts.
-  - name: Auth
-    description: Auth operations.
-servers:
-   - url: https://nodejs-hw-mongodb-2-fpiu.onrender.com
 
+servers:
+  - url: https://nodejs-hw-mongodb-2-fpiu.onrender.com
     description: Production server
   - url: http://localhost:3000
     description: Local development server

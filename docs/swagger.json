@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://nodejs-hw-mongodb-3-snkl.onrender.com",
+      "url": "https://nodejs-hw-mongodb-2-fpiu.onrender.com",
       "description": "Production server"
     },
     {
@@ -23,10 +23,6 @@
     {
       "name": "Contacts",
       "description": "Operations about contacts."
-    },
-    {
-      "name": "Auth",
-      "description": "Auth operations."
     }
   ],
   "paths": {
@@ -291,7 +287,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "65ca76e7ae7f10c88b67534"
+              "example": "65ca76e7ae7f10c88b55674"
             }
           }
         ],
@@ -314,7 +310,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully found contact with id 65ca76e7ae7f10c88b67534!"
+                      "example": "Successfully found contact with id 65ca76e7ae7f10c88b55674!"
                     },
                     "data": {
                       "type": "object",
