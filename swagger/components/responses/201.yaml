@@ -13,6 +13,6 @@ content:
           example: 201
         message:
           type: string
-          example: Successfully created a new contact!
+          example: Successfully created a contact!
         data:
           $ref: ../../components/schemas/contacts.yaml
